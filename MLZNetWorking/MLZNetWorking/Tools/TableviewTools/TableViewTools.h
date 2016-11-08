@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, TableViewCellStyle) {
      TableViewCellStyleTwo = 2,
      TableViewCellStyleThree = 3,
      TableViewCellStyleFour = 4,
+    
 };
 
 @interface TableViewTools : NSObject
