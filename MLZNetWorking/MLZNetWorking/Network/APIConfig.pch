@@ -1,0 +1,33 @@
+//
+//  APIConfig.pch
+//  NetWorking
+//
+//  Created by malizhi on 16/11/7.
+//  Copyright © 2016年 LzNews. All rights reserved.
+//
+#import "SSKeychain.h"
+
+#ifndef APIConfig_pch
+#define APIConfig_pch
+/** api固定参数 */
+#define VERSION_CODE     @""             // 内部版本号
+#define VERSION          @""             //外部版本号
+#define MARKET           @"APPLE"        //市场
+#define PLATFORM         @"ios"          //平台
+#define API_OPENUDID     [SSKeychain passwordForService:@"" account:@"openUDID"]
+
+#define HOST @""                         //服务器
+
+#define FinalStr        [NSString stringWithFormat:@"&market=%@&vercode=%@&vername=%@&deviceid=%@", MARKET, VERSION_CODE, VERSION, API_OPENUDID]
+
+/**
+ *  api接口
+ *
+ *  格式：API_页面名称_功能
+ */
+
+/**
+ *  公用接口
+ */
+
+#endif
