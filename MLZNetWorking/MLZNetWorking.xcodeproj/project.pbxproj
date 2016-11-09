@@ -38,6 +38,7 @@
 		B9076AEA1DD1F5EF003DF09B /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076ACC1DD1F5EF003DF09B /* UIRefreshControl+AFNetworking.m */; settings = {ASSET_TAGS = (); }; };
 		B9076AEB1DD1F5EF003DF09B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076ACE1DD1F5EF003DF09B /* UIWebView+AFNetworking.m */; settings = {ASSET_TAGS = (); }; };
 		B9076AEC1DD1F5EF003DF09B /* TableViewTools.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076AD21DD1F5EF003DF09B /* TableViewTools.m */; settings = {ASSET_TAGS = (); }; };
+		B9076B2D1DD351FD003DF09B /* https.cer in Resources */ = {isa = PBXBuildFile; fileRef = B9076B2C1DD351FD003DF09B /* https.cer */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		B9076ACE1DD1F5EF003DF09B /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		B9076AD11DD1F5EF003DF09B /* TableViewTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewTools.h; sourceTree = "<group>"; };
 		B9076AD21DD1F5EF003DF09B /* TableViewTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewTools.m; sourceTree = "<group>"; };
+		B9076B2C1DD351FD003DF09B /* https.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = https.cer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +258,7 @@
 		B9076A9F1DD1F5EF003DF09B /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				B9076B2C1DD351FD003DF09B /* https.cer */,
 				B9076AA01DD1F5EF003DF09B /* AFNetworking */,
 				B9076AAE1DD1F5EF003DF09B /* APIConfig.pch */,
 				B9076AAF1DD1F5EF003DF09B /* MLZBaseRequest.h */,
@@ -462,6 +465,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9076B2D1DD351FD003DF09B /* https.cer in Resources */,
 				B9076A721DD1F4EA003DF09B /* LaunchScreen.storyboard in Resources */,
 				B9076A6F1DD1F4EA003DF09B /* Assets.xcassets in Resources */,
 				B9076A6D1DD1F4EA003DF09B /* Main.storyboard in Resources */,
@@ -740,6 +744,7 @@
 				B9076A8E1DD1F4EA003DF09B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B9076A8F1DD1F4EA003DF09B /* Build configuration list for PBXNativeTarget "MLZNetWorkingTests" */ = {
 			isa = XCConfigurationList;
@@ -748,6 +753,7 @@
 				B9076A911DD1F4EA003DF09B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B9076A921DD1F4EA003DF09B /* Build configuration list for PBXNativeTarget "MLZNetWorkingUITests" */ = {
 			isa = XCConfigurationList;
@@ -756,6 +762,7 @@
 				B9076A941DD1F4EA003DF09B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
