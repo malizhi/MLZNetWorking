@@ -20,9 +20,6 @@
 
 {
     AFHTTPSessionManager *_sessionManager;
-    AFHTTPSessionManager *_defaultSessionManager;
-    AFHTTPSessionManager *_ephemeralSessionManager;
-    AFHTTPSessionManager *_backgroundSessionManager;
     AFNetworkReachabilityManager *_reachabilityManager;
 }
 
@@ -48,42 +45,16 @@
 {
     self = [super init];
     if (self) {
-        
-        [self config];
+       [self configureReachabilityManager];
     }
     return self;
 }
 
-- (void)config
+- (AFHTTPSessionManager *)configureSessionManagerWithSessionConfiguration:(NSURLSessionConfiguration *)configuration baseURL:(NSURL *)baseURL
 {
-    [self configureDefaultSessionManager];
-    [self configureEphemeralSessionManager];
-    [self configureBackgroundSessionManager];
-    [self configureReachabilityManager];
-}
-
-- (void)configureDefaultSessionManager
-{
-    NSURLSessionConfiguration *defaultConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-    _defaultSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:defaultConfig];
-    [self setupResponseSerializerContentTypeForManager:_defaultSessionManager];
-}
-
-- (void)configureEphemeralSessionManager
-{
-    NSURLSessionConfiguration *ephemeralConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    _ephemeralSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:ephemeralConfig];
-    [self setupResponseSerializerContentTypeForManager:_ephemeralSessionManager];
-}
-
-- (void)configureBackgroundSessionManager
-{
-    if (IOS8) {
-        NSURLSessionConfiguration *backgroundConfig = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"background"];
-        _backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:backgroundConfig];
-        [self setupResponseSerializerContentTypeForManager:_backgroundSessionManager];
-    }
-    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL sessionConfiguration:configuration];
+    [self setupResponseSerializerContentTypeForManager:manager];
+    return manager;
 }
 
 - (void)configureReachabilityManager
@@ -157,8 +128,8 @@
     NSString *url = [self buildRequestUrl:request];
     id param = [self buildRequestParam:request];
     
-    _sessionManager = [self getProperlyManager:[request.childRequest serviceSessionType]];
-    [_sessionManager setSecurityPolicy:[self customSecurityPolicy]];
+    _sessionManager = [self getProperlyManager:[request.childRequest serviceSessionType] baseURL:[NSURL URLWithString:url]];
+    
     if (request.childRequest && [request.childRequest respondsToSelector:@selector(requestTimeoutInterval)]) {
        _sessionManager.requestSerializer.timeoutInterval = [request.childRequest requestTimeoutInterval];
     }
@@ -171,6 +142,10 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
+    if ([_sessionManager.baseURL.scheme isEqualToString:@"https"]) {
+       _sessionManager.securityPolicy = [MLZNetwork customSecurityPolicy];
+    }
+    
     __block NSURLSessionDataTask *dataTask = nil;
     
     /// request
@@ -182,7 +157,7 @@
             [self buildCallBackResult:request responseObject:nil error:error requestId:[[dataTask taskDescription] integerValue]];
         }];
         
-    } else if (method == MLZRequestMethodGet) {
+    } else if (method == MLZRequestMethodPost) {
         
          dataTask =   [_sessionManager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 [self buildCallBackResult:request responseObject:responseObject error:nil requestId:[[dataTask taskDescription] integerValue]];
@@ -197,6 +172,7 @@
     _sessionManager = nil;
     
     return requestId;
+    return nil;
 }
 
 - (void)buildCallBackResult:(MLZBaseRequest *)request responseObject:(id)responseObject error:(NSError *)error requestId:(NSInteger)requestId
@@ -251,7 +227,7 @@
 - (NSString *)buildRequestUrl:(MLZBaseRequest *)request
 {
     NSString *detailUrl = [request.childRequest detailUrl];
-    if ([detailUrl hasPrefix:@"http"]) {
+    if ([detailUrl hasPrefix:@"http"] || [detailUrl hasPrefix:@"https"]) {
         return detailUrl;
     }
     
@@ -261,8 +237,10 @@
         if ([request.childRequest baseUrl].length > 0) {
             baseUrl = [request.childRequest baseUrl];
         } else {
-            baseUrl = [MLZNetworkConfig baseUrl];
+           baseUrl = [MLZNetworkConfig baseUrl];
         }
+    } else {
+            baseUrl = [MLZNetworkConfig baseUrl];
     }
     
     /** 由于api接口不标准，这里先简单对post请求做个处理 */
@@ -317,19 +295,22 @@
     return YES;
 }
 
-- (AFHTTPSessionManager *)getProperlyManager:(HttpServiceSessionType)type
+- (AFHTTPSessionManager *)getProperlyManager:(HttpServiceSessionType)type baseURL:(NSURL *)baseURL
 {
-    AFHTTPSessionManager *manager = _defaultSessionManager;
+    AFHTTPSessionManager *manager = [self configureSessionManagerWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] baseURL:baseURL];
+    
     switch (type) {
-        case HttpServiceSessionTypeDefault:
-            manager = _defaultSessionManager;
+        case HttpServiceSessionTypeEphemeral: {
+        manager = [self configureSessionManagerWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration] baseURL:baseURL];
+     }
             break;
-        case HttpServiceSessionTypeEphemeral:
-            manager = _ephemeralSessionManager;
+        case HttpServiceSessionTypeBackground: {
+            if (IOS8) {
+                NSURLSessionConfiguration *backgroundConfig = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"background"];
+                 manager = [self configureSessionManagerWithSessionConfiguration:backgroundConfig baseURL:baseURL];
+            }
             break;
-        case HttpServiceSessionTypeBackground:
-            manager = _backgroundSessionManager;
-            break;
+      }
         default:
             break;
     }
@@ -361,10 +342,10 @@
     }
 }
 
-- (AFSecurityPolicy*)customSecurityPolicy
++ (AFSecurityPolicy*)customSecurityPolicy
 {
     // /先导入证书
-    NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"https" ofType:@"cer"];//证书的路径
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"adn" ofType:@"cer"];//证书的路径
     NSData *certData = [NSData dataWithContentsOfFile:cerPath];
     
     // AFSSLPinningModeCertificate 使用证书验证模式
@@ -372,7 +353,7 @@
     
     // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
     // 如果是需要验证自建证书，需要设置为YES
-    securityPolicy.allowInvalidCertificates = NO;
+    securityPolicy.allowInvalidCertificates = YES;
     
     //validatesDomainName 是否需要验证域名，默认为YES；
     //假如证书的域名与你请求的域名不一致，需把该项设置为NO；如设成NO的话，即服务器使用其他可信任机构颁发的证书，也可以建立连接，这个非常危险，建议打开。
@@ -381,6 +362,7 @@
     securityPolicy.validatesDomainName = YES;
     
     securityPolicy.pinnedCertificates = [NSSet setWithObject:certData];
+    
     return securityPolicy;
 }
 

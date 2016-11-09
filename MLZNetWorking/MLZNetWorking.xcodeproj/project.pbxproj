@@ -38,7 +38,7 @@
 		B9076AEA1DD1F5EF003DF09B /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076ACC1DD1F5EF003DF09B /* UIRefreshControl+AFNetworking.m */; settings = {ASSET_TAGS = (); }; };
 		B9076AEB1DD1F5EF003DF09B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076ACE1DD1F5EF003DF09B /* UIWebView+AFNetworking.m */; settings = {ASSET_TAGS = (); }; };
 		B9076AEC1DD1F5EF003DF09B /* TableViewTools.m in Sources */ = {isa = PBXBuildFile; fileRef = B9076AD21DD1F5EF003DF09B /* TableViewTools.m */; settings = {ASSET_TAGS = (); }; };
-		B9076B2D1DD351FD003DF09B /* https.cer in Resources */ = {isa = PBXBuildFile; fileRef = B9076B2C1DD351FD003DF09B /* https.cer */; settings = {ASSET_TAGS = (); }; };
+		B9076B321DD36059003DF09B /* adn.cer in Resources */ = {isa = PBXBuildFile; fileRef = B9076B311DD36059003DF09B /* adn.cer */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,7 +125,7 @@
 		B9076ACE1DD1F5EF003DF09B /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		B9076AD11DD1F5EF003DF09B /* TableViewTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewTools.h; sourceTree = "<group>"; };
 		B9076AD21DD1F5EF003DF09B /* TableViewTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewTools.m; sourceTree = "<group>"; };
-		B9076B2C1DD351FD003DF09B /* https.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = https.cer; sourceTree = "<group>"; };
+		B9076B311DD36059003DF09B /* adn.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = adn.cer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,7 +258,7 @@
 		B9076A9F1DD1F5EF003DF09B /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				B9076B2C1DD351FD003DF09B /* https.cer */,
+				B9076B311DD36059003DF09B /* adn.cer */,
 				B9076AA01DD1F5EF003DF09B /* AFNetworking */,
 				B9076AAE1DD1F5EF003DF09B /* APIConfig.pch */,
 				B9076AAF1DD1F5EF003DF09B /* MLZBaseRequest.h */,
@@ -465,9 +465,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9076B2D1DD351FD003DF09B /* https.cer in Resources */,
 				B9076A721DD1F4EA003DF09B /* LaunchScreen.storyboard in Resources */,
 				B9076A6F1DD1F4EA003DF09B /* Assets.xcassets in Resources */,
+				B9076B321DD36059003DF09B /* adn.cer in Resources */,
 				B9076A6D1DD1F4EA003DF09B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,7 +661,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MLZNetWorking/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = malizhi.MLZNetWorking;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiangys.AfnHttpsSSLDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -672,7 +672,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MLZNetWorking/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = malizhi.MLZNetWorking;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiangys.AfnHttpsSSLDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
